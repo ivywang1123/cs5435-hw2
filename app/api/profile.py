@@ -14,6 +14,7 @@ from app.models.user import get_user
 def profile(db, session, username):
     user = get_user(db, username)
     session_user = get_user(db, session.get_username())
+    session_id = session.get_id()
     if user is None:
         return template(
             "profile",
@@ -25,6 +26,7 @@ def profile(db, session, username):
         "profile",
         user=user,
         session_user=session_user,
+        session_id=session_id
     )
 
 @post('/aboutme')

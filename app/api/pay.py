@@ -25,25 +25,32 @@ def do_payment(db, session):
     ).fetchone()
     payment_amount = int(request.forms.get('amount'))
     error = None
-    if (sender.get_coins() < payment_amount):
+    if (session.get_id() != request.forms.get("session_id")):
         response.status = 400
-        error = "Not enough funds."
-    elif (payment_amount < 0):
-        response.status = 400
-        error = "Payment amount cannot be negative."
-    elif (recipient is None):
-        response.status = 400
-        error = "Recipient {} does not exist.".format(request.forms.get('recipient'))
-    elif (recipient['username'] == sender.username):
-        response.status = 400
-        error = "Cannot pay self."
+        error = "Invalid session ID."
     else:
-        sender.debit_coins(payment_amount)
-        db.execute(
-            "UPDATE users SET coins={} WHERE users.username='{}'".format(
-                recipient['coins'] + payment_amount, recipient['username']
+        if (sender.get_coins() < payment_amount):
+            response.status = 400
+            error = "Not enough funds."
+        elif (payment_amount < 0):
+            response.status = 400
+            error = "Payment amount cannot be negative."
+        elif (recipient is None):
+            response.status = 400
+            error = "Recipient {} does not exist.".format(request.forms.get('recipient'))
+        elif (recipient['username'] == sender.username):
+            response.status = 400
+            error = "Cannot pay self."
+            print("Cannot pay self")
+        else:
+            sender.debit_coins(payment_amount)
+            db.execute(
+                "UPDATE users SET coins={} WHERE users.username='{}'".format(
+                    recipient['coins'] + payment_amount, recipient['username']
+                )
             )
-        )
+
+
     return template(
         "profile",
         user=sender,

